@@ -2,8 +2,8 @@ import "./styles.css"
 function CurrentWeather({ data, location }) {
   return (
    
-      <div className="my-margin"  align="center">
-
+      <div className=" main_comp"  align="center">
+        
                     <h2 className="text-xl font-bold mb-2">{location}</h2>
                     <img
                       src={`https://openweathermap.org/img/wn/${data.icon}@2x.png`}

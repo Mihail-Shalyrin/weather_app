@@ -5,8 +5,9 @@ import wind from './pictures/wind.png';
 
 function MeteoConditions({ data }) {
   return (
-    <div className="my-margin">
-      <div>Метеоусловия</div>
+    <div className="my-margin color">
+        
+      <div className="label1">Метеоусловия</div>
 
       <div className="weather-row">
         <img src={thermometer} alt="давление" className="icon" />

@@ -71,7 +71,7 @@ function WeatherApp() {
 
         <button
           onClick={() => setShowSearch((prev) => !prev)}
-          className="absolute top-4 right-4 text-2xl"
+          className="circle-button"
           title="Поиск города"
         >
           <img src={search} alt="Кнопка" width="32" height="32"/>
@@ -87,7 +87,7 @@ function WeatherApp() {
 
         <button
           onClick={() => setCityQuery(null)}
-          className="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" 
+          className="circle-button" 
         >
           <img src={geo} alt="Кнопка" width="32" height="32"/>
         </button>

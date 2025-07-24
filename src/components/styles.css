@@ -1,20 +1,29 @@
 .my-margin{
     margin: 7px 15px;
+    border-radius: 15px;
 }
-
+.label1{
+    padding: 25px;
+}
 .button-container {
   display: flex;
   justify-content: space-between; /* кнопки по краям */
-  padding: 10px;
+  padding: 5px;
 }
-
+.color{
+    background-color: azure;
+}
 .weather-row {
+ padding-left: 10px;
+  padding-right: 10px;
   display: grid;
   grid-template-columns: 60px 1fr auto;
   align-items: center;
   margin-bottom: 10px;
   gap: 12px; /* это увеличит пробелы между колонками */
    line-height: 2; /* или 24px, 28px и т.д. */
+  
+   margin: 0
 }
 
 .icon {
@@ -30,7 +39,30 @@
 }
 
 .value {
-  font-weight: bold;
+  /* font-weight: bold; */
   font-size: 20px;
   text-align: right;
+}
+.circle-button {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;     /* делает кнопку круглой */
+  border: none;
+  background-color: #3498db;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.circle-button img {
+  width: 24px;
+  height: 24px;
+}
+
+.main_comp{
+     margin: 8px 0;
+     padding: 8px 0;
+     border-radius: 15px;
+     background-color: azure;
 }

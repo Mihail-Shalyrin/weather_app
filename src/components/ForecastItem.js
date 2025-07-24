@@ -7,7 +7,7 @@ function ForecastItem({ data }) {
   });
 
   return (
-<div >
+
       <div className="weather-row">
          <img
         src={`https://openweathermap.org/img/wn/${data.icon}@2x.png`}
@@ -20,7 +20,7 @@ function ForecastItem({ data }) {
           {`${Math.round(data.min_temp)}° / ${Math.round(data.max_temp)}°`}
         </span>      
 </div>
-    </div>
+    
     
   );
 }
