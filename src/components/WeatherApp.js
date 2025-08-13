@@ -5,6 +5,7 @@ import SearchCity from './SearchCity';
 import geo from './pictures/geo.png';
 import search from './pictures/search.png'
 import MeteoConditions from './MeteoConditions';
+import { fetchWeatherByCity, fetchWeatherByCoords } from './server'; // путь подставь свой
 function WeatherApp() {
   const [weatherData, setWeatherData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -12,58 +13,56 @@ function WeatherApp() {
   const [cityQuery, setCityQuery] = useState(null);
   const [showSearch, setShowSearch] = useState(false); // 👈 для выпадающей формы
 
-  const fetchWeather = async ({ latitude, longitude, city }) => {
-    setLoading(true);
-    setGeoError(null);
-    try {
-      let url;
-      if (city) {
-        url = `http://localhost:5973/api/getCity?сity=${city}`;
-      } else {
-        url = `http://localhost:5973/api/getWeather?lat=${latitude}&lon=${longitude}`;
-      }
-      const res = await fetch(url);
-      if (!res.ok) throw new Error("Ошибка при получении данных с сервера");
-      const data = await res.json();
-      setWeatherData(data);
-    } catch (err) {
-      console.error("Ошибка при загрузке погоды:", err);
-      setGeoError("Не удалось загрузить данные о погоде.");
-    } finally {
-      setLoading(false);
+
+const fetchWeather = async ({ latitude, longitude, city }) => {
+  setLoading(true);
+  setGeoError(null);
+  try {
+    let data;
+    if (city) {
+      data = await fetchWeatherByCity(city);
+    } else {
+      data = await fetchWeatherByCoords(latitude, longitude);
     }
-  };
+    setWeatherData(data);
+  } catch (err) {
+    console.error("Ошибка при загрузке погоды:", err);
+    setGeoError("Не удалось загрузить данные о погоде.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
-    if (cityQuery) {
-      fetchWeather({ city: cityQuery });
-    } else if ('geolocation' in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          fetchWeather({ latitude, longitude });
-        },
-        (error) => {
-          console.error("Геолокация недоступна:", error.message);
-          setGeoError("Не удалось получить геолокацию.");
-          setLoading(false);
-        }
-      );
-    } else {
-      console.error("Геолокация не поддерживается");
-      setGeoError("Ваш браузер не поддерживает геолокацию.");
-      setLoading(false);
-    }
-  }, [cityQuery]);
+  if (cityQuery) {
+    fetchWeather({ city: cityQuery });
+  } else if ('geolocation' in navigator) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        fetchWeather({ latitude, longitude });
+      },
+      (error) => {
+        console.error("Геолокация недоступна:", error.message);
+        //  Используем координаты по умолчанию
+        fetchWeather({ latitude: 55.7558, longitude: 37.6173 });
+      }
+    );
+  } else {
+    console.error("Геолокация не поддерживается");
+    //  Используем координаты по умолчанию, если даже нет geolocation API
+    fetchWeather({ latitude: 55.7558, longitude: 37.6173 });
+  }
+}, [cityQuery]);
 
   const handleCitySearch = (city) => {
     setCityQuery(city);
-    setShowSearch(false); // ⛔ закрыть форму после ввода
+    setShowSearch(false); //  закрыть форму после ввода
   };
 
   if (loading) return <p>Загрузка...</p>;
   if (geoError) return <p>{geoError}</p>;
-  if (!weatherData) return <p>Ошибка загрузки данных</p>;
+  if (!weatherData) return <p>Ошибка загрузки данных assdasdasdasdasds</p>;
 
   return (
     <div className="max-w-xl mx-auto bg-white rounded-xl shadow-md p-6 relative">
@@ -93,7 +92,6 @@ function WeatherApp() {
         </button>
         
       </div>
-        
       <CurrentWeather data={weatherData.current} location={weatherData.location} />
       <MeteoConditions data={weatherData.current} />
       <ForecastList forecast={weatherData.forecast} />
